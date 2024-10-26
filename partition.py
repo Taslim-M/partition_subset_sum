@@ -43,10 +43,18 @@ def partition(arr):
     subset_indices = backtrack(arr, dp, target_sum)
     return subset_indices
 
+def partition_helper(arr):
+    # print(arr)
+    min_val = min(arr)
+    if min_val < 0:
+        arr = [x + abs(min_val) + 1 for x in arr]
+    # print(arr)
+    return partition(arr)
 
 def main():
-    arr = [1, 1, 4, 5, 9]
-    result = partition(arr)
+    #arr = [1, 1, 4, 5, 9]
+    arr = [5, -1, 3, 1]
+    result = partition_helper(arr)
     if result:
         print("Subset:", [arr[i] for i in result])
     else:
