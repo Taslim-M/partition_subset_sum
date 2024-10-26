@@ -1,3 +1,18 @@
+# Backtracking to find the subset indices
+def backtrack(arr, dp, target_sum):
+    subset_indices = []
+    i, j = len(arr), target_sum
+    
+    while i > 0 and j > 0:
+        # Check if this element was included in the subset
+        if dp[i][j] and not dp[i - 1][j]:
+            subset_indices.append(i - 1)  
+            j -= arr[i - 1]  # Reduce the remaining sum by the element's value
+        i -= 1  # Move to the previous row
+
+    subset_indices.reverse()  # Reverse to get the indices in the correct order
+    return subset_indices
+
 def partition(arr):
     total_sum = sum(arr)
     # If the total sum is odd, two equal subsets is not possible
@@ -21,9 +36,21 @@ def partition(arr):
             else:
                 dp[i][j] = dp[i - 1][j]
     
-    return dp[len(arr)][target_sum]
+    if not dp[len(arr)][target_sum]:
+        return False
+
+    # if exist, return indices
+    subset_indices = backtrack(arr, dp, target_sum)
+    return subset_indices
 
 
+def main():
+    arr = [1, 1, 4, 5, 9]
+    result = partition(arr)
+    if result:
+        print("Subset:", [arr[i] for i in result])
+    else:
+        print("Subset does not exist")
 
-arr = [1, 1, 4, 5, 9]
-print(partition(arr))
+
+main()
